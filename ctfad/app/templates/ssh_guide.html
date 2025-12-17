@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}SSH Guide · HHF-ADCTF{% endblock %}
+{% block content %}
+{% set team_mode = current_user.is_authenticated and current_user.is_team %}
+<section class="content">
+  <h1 class="title">Panduan Akses SSH</h1>
+  <p class="subtitle">Terhubung ke host rentan milik tim Anda</p>
+
+  {% if team_mode %}
+  {% set team = current_user.team %}
+  <div class="box">
+    <h2 class="subtitle">Kredensial Tim Anda</h2>
+    <ul>
+      <li><strong>IP Layanan:</strong> <code>{{ team.ip_address }}</code></li>
+      <li><strong>Username:</strong> <code>appuser</code></li>
+      <li><strong>Port:</strong> <code>2222</code></li>
+      <li><strong>Password:</strong>
+        {% if team.ssh_password %}
+        <code>{{ team.ssh_password }}</code>
+        {% else %}
+        <span class="has-text-grey">Belum diatur &mdash; minta admin menambahkan kata sandi SSH.</span>
+        {% endif %}
+      </li>
+    </ul>
+    <p class="help">Rahasiakan kata sandi ini; setiap tim mendapatkan kombinasi unik.</p>
+  </div>
+  {% endif %}
+
+  <div class="box">
+    <h2 class="subtitle">Default</h2>
+    <ul>
+      <li><strong>Username:</strong> <code>appuser</code></li>
+      <li><strong>Port:</strong> <code>2222</code></li>
+      <li><strong>IP Address:</strong> IP layanan tim (mis. <code>10.10.0.100</code>)</li>
+      <li><strong>Password:</strong> diatur admin di data tim (terlihat di Dasbor Tim)</li>
+    </ul>
+
+  </div>
+
+  <div class="box">
+    <h2 class="subtitle">Quick commands</h2>
+    <pre><code>ssh -p 2222 appuser@10.10.0.100</code></pre>
+    <p class="is-size-6 has-text-grey">Ganti IP dengan alamat tim masing-masing.</p>
+  </div>
+</section>
+{% endblock %}

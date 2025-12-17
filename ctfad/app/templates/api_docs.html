@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% set team_mode = current_user.is_authenticated and current_user.is_team %}
+{% if team_mode %}
+  {% set team_token = current_user.team.api_token %}
+  {% set flag_tokens = current_user.team.flag_access_tokens|sort(attribute='challenge.name') %}
+{% endif %}
+{% block title %}API Documentation · HHF-ADCTF{% endblock %}
+{% block content %}
+<style>
+  .api-docs-hero {
+    background: linear-gradient(120deg, #0b203f, #1e3f78);
+    color: #f8fbff;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 18px 35px rgba(9, 12, 20, 0.35);
+  }
+  .api-docs-hero h1 {
+    color: #fff;
+    margin-bottom: 0.25rem;
+  }
+  .api-docs-hero code {
+    background: rgba(255, 255, 255, 0.2);
+    color: #0b1b33;
+    border-radius: 6px;
+    padding: 0 0.4rem;
+  }
+  .api-docs-hero p,
+  .api-docs-hero .subtitle {
+    color: rgba(248, 251, 255, 0.92);
+  }
+  .api-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .api-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .api-card-wide {
+    grid-column: 1 / -1;
+  }
+  .api-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #475569;
+  }
+  .method-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .method-get { background: #e0f2fe; color: #0369a1; }
+  .method-post { background: #fef3c7; color: #92400e; }
+  .try-panel {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1rem;
+    background: #f8fafc;
+  }
+  .try-panel .button {
+    margin-top: 0.5rem;
+  }
+  .try-output {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-top: 0.75rem;
+    font-family: "Fira Code", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.85rem;
+    max-height: 200px;
+    overflow: auto;
+  }
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+</style>
+
+<section class="api-docs">
+  <div class="api-docs-hero">
+    <h1 class="title">Dokumentasi API HHF-ADCTF</h1>
+    <p class="subtitle is-5 mb-3">
+      Gunakan <code>X-Team-Token</code> (butuh kata sandi portal tim) atau admin token untuk
+      mengotomasi pengambilan scoreboard, feed serangan, dan submit flag.
+    </p>
+    <p class="is-size-6">
+      Header permintaan:<br />
+      <code>X-Team-Token: &lt;team-api-token&gt;</code> untuk endpoint pemain •
+      <code>X-Admin-Token: &lt;admin-token&gt;</code> untuk endpoint admin.
+    </p>
+    {% if team_mode %}
+    <article class="message is-info mt-4">
+      <div class="message-body">
+        Masuk sebagai <strong>{{ current_user.team.name }}</strong>. Request dari halaman ini
+        otomatis menyertakan <code>X-Team-Token</code> kalian.
+      </div>
+    </article>
+    {% endif %}
+  </div>
+
+  <div class="api-grid">
+    <article class="api-card" id="api-teams">
+      <h2 class="title is-4">Daftar Tim</h2>
+      <div class="api-meta">
+        <span class="method-badge method-get">GET</span>
+        <code>/api/teams</code>
+      </div>
+      <p>
+        Mengembalikan semua tim yang terdaftar beserta IP layanan mereka. Berguna untuk otomatisasi
+        penargetan atau validasi peta jaringan.
+      </p>
+      {% if team_mode %}
+      <form class="try-panel try-form" data-method="GET" data-url="{{ url_for('player.list_teams') }}" data-token="{{ team_token }}">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Try it</p>
+        <button class="button is-link is-fullwidth" type="submit">Send Request</button>
+        <pre class="try-output mt-3"></pre>
+      </form>
+      {% endif %}
+    </article>
+
+    <article class="api-card" id="api-flags">
+      <h2 class="title is-4">Submit Flag</h2>
+      <div class="api-meta">
+        <span class="method-badge method-post">POST</span>
+        <code>/api/flags</code>
+      </div>
+      <p>
+        Kirim flag yang ditangkap dalam format JSON. Body harus berisi <code>{"flag": "HHFADCTF{...}"}</code>.
+        Submit yang berhasil memberi poin ke tim penyerang dan mencatat tim bertahan serta challenge.
+      </p>
+      {% if team_mode %}
+      <form class="try-panel try-form" data-method="POST" data-url="{{ url_for('player.submit_flag_route') }}" data-token="{{ team_token }}">
+        <label class="label is-size-7">Flag Value</label>
+        <input class="input is-small" type="text" name="flag" placeholder="HHFADCTF{...}" required />
+        <button class="button is-link is-fullwidth mt-3" type="submit">Send Request</button>
+        <pre class="try-output mt-3"></pre>
+      </form>
+      {% endif %}
+    </article>
+
+    <article class="api-card" id="api-scoreboard">
+      <h2 class="title is-4">Cuplikan Papan Skor</h2>
+      <div class="api-meta">
+        <span class="method-badge method-get">GET</span>
+        <code>/api/scoreboard</code>
+      </div>
+      <p>
+        Ambil peringkat terbaru termasuk poin flag, poin SLA, dan total. Ini sumber data untuk UI papan skor publik.
+      </p>
+      {% if team_mode %}
+      <form class="try-panel try-form" data-method="GET" data-url="{{ url_for('player.public_scoreboard') }}" data-token="{{ team_token }}">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Try it</p>
+        <button class="button is-link is-fullwidth" type="submit">Send Request</button>
+        <pre class="try-output mt-3"></pre>
+      </form>
+      {% endif %}
+    </article>
+
+    <article class="api-card" id="api-attacks">
+      <h2 class="title is-4">Feed Serangan Terbaru</h2>
+      <div class="api-meta">
+        <span class="method-badge method-get">GET</span>
+        <code>/api/attacks</code>
+      </div>
+      <p>
+        Menyajikan 100 submit terakhir dengan penyerang, bertahan, challenge, dan waktu. Cocok untuk visualisasi atau alerting.
+      </p>
+      {% if team_mode %}
+      <form class="try-panel try-form" data-method="GET" data-url="{{ url_for('player.attack_feed') }}" data-token="{{ team_token }}">
+        <p class="is-size-7 has-text-weight-semibold mb-2">Try it</p>
+        <button class="button is-link is-fullwidth" type="submit">Send Request</button>
+        <pre class="try-output mt-3"></pre>
+      </form>
+      {% endif %}
+    </article>
+
+  </div>
+</section>
+
+{% if team_mode %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".try-form").forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const url = form.dataset.url;
+      const method = form.dataset.method || "GET";
+      const token = form.dataset.token;
+      const output = form.querySelector(".try-output");
+      output.textContent = "Loading…";
+
+      const headers = {
+        "Accept": "application/json",
+      };
+
+      if (token) {
+        headers["X-Team-Token"] = token;
+      }
+
+      const options = {
+        method,
+        headers,
+      };
+
+      if (method.toUpperCase() === "POST") {
+        const flagValue = form.querySelector("[name='flag']")?.value || "";
+        headers["Content-Type"] = "application/json";
+        options.body = JSON.stringify({ flag: flagValue });
+      }
+
+      try {
+        const response = await fetch(url, options);
+        const contentType = response.headers.get("Content-Type") || "";
+        let payload;
+        if (contentType.includes("application/json")) {
+          payload = await response.json();
+          output.textContent = JSON.stringify(payload, null, 2);
+        } else {
+          payload = await response.text();
+          output.textContent = payload;
+        }
+        if (!response.ok) {
+          output.textContent = `Status ${response.status}:\n` + output.textContent;
+        }
+      } catch (err) {
+        output.textContent = `Request failed: ${err}`;
+      }
+    });
+  });
+});
+</script>
+{% endif %}
+{% endblock %}

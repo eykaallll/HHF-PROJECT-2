@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Scoreboard{% endblock %}
+{% block content %}
+<section class="hero scoreboard-hero mb-5">
+  <div class="hero-body">
+    <div class="columns is-vcentered">
+      <div class="column">
+        <p class="heading">Current Leader</p>
+        <p class="title is-2" data-leader-name>--</p>
+        <p class="subtitle" data-leader-points>--</p>
+        <p class="has-text-white-ter" data-leader-captures>Waiting for data…</p>
+      </div>
+      <div class="column">
+        <p class="heading has-text-right-tablet">Live scoreboard</p>
+        <p class="title is-4 has-text-right-tablet">Auto-refreshing every 15 seconds</p>
+        <p class="has-text-right-tablet">Data sourced directly from the player API.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="box">
+  <h2 class="subtitle">Team Standings</h2>
+  <div class="table-container">
+    <table class="table is-striped is-fullwidth" id="scoreboard-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Team</th>
+          <th>Captures</th>
+          <th>SLA Passes</th>
+          <th>Attack Pts</th>
+          <th>SLA Pts</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='scoreboard.js') }}"></script>
+{% endblock %}

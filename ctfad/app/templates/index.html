@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}HHF-ADCTF{% endblock %}
+{% block content %}
+<section class="hero scoreboard-hero mb-5">
+  <div class="hero-body">
+    <div class="columns is-centered">
+      <div class="column is-two-thirds">
+      <p class="heading">HHF-ADCTF</p>
+        <p class="subtitle">
+          In an AD CTF, every team owns a vulnerable service stack. The goal is to harden your own boxes while
+          stealing flags from everyone else. A central control plane tracks service health (SLA), distributes fresh flags,
+          and scores valid captures in near real-time.
+        </p>
+        <p>
+          Use this portal to register teams, rotate flags, review the attack log, and follow the scoreboard as the
+          tug-of-war unfolds.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="box">
+  <h2 class="title is-5">Quick links</h2>
+  <p>
+    <a href="{{ url_for('public.scoreboard') }}">Scoreboard</a> &middot;
+    <a href="{{ url_for('public.attack_log') }}">Attack Log</a> &middot;
+    <a href="{{ url_for('public.api_docs') }}">API Docs</a>
+  </p>
+</div>
+{% endblock %}

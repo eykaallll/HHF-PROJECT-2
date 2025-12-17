@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Team Dashboard{% endblock %}
+{% block content %}
+<h1 class="title">Selamat datang, {{ team.name }}</h1>
+<div class="columns">
+  <div class="column is-half">
+    <div class="box">
+      <h2 class="subtitle">Detail Tim</h2>
+      <p><strong>IP Layanan:</strong> {{ team.ip_address }}</p>
+      <p><strong>API Token:</strong> <code>{{ team.api_token }}</code></p>
+      {% if team.credential %}
+      <p><strong>Kata Sandi Portal:</strong> <code>{{ team.credential.password_plain }}</code></p>
+      {% endif %}
+      {% if team.ssh_password %}
+      <p><strong>Kata Sandi SSH:</strong> <code>{{ team.ssh_password }}</code></p>
+      {% endif %}
+      {% if team.flag_access_tokens %}
+      <div class="content mt-3">
+        <p><strong>Token Akses Flag</strong></p>
+        <ul>
+          {% for token in team.flag_access_tokens|sort(attribute='challenge.name') %}
+          <li>
+            {{ token.challenge.name if token.challenge else 'Challenge' }}:
+            <code>{{ token.token }}</code>
+            <br />
+            <span class="help">Endpoint: {{ url_for('flag_service.fetch_flag', token=token.token, _external=True) }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <p class="help">Berikan token ini ke host layanan kalian agar bisa menarik flag terbaru dengan aman.</p>
+      </div>
+      {% endif %}
+      <p class="help">Simpan rahasia ini baik-baik. Admin bisa mereset jika diperlukan.</p>
+    </div>
+  </div>
+  <div class="column is-half">
+    <div class="box">
+      <h2 class="subtitle">Tautan Cepat</h2>
+      <ul>
+        <li><a href="{{ url_for('public.scoreboard') }}">Papan Skor Publik</a></li>
+        <li><a href="{{ url_for('public.attack_log') }}">Log Serangan</a></li>
+        <li><a href="{{ url_for('public.api_docs') }}">Referensi API</a></li>
+        <li><a href="{{ url_for('auth.logout') }}">Keluar</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="box">
+  <h2 class="subtitle">Ringkasan Player API</h2>
+  <div class="content">
+    <p>Otentikasi request dengan header <code>X-Team-Token</code>.</p>
+    <ul>
+      <li><code>GET /api/teams</code> &mdash; daftar alamat IP tiap tim.</li>
+      <li><code>POST /api/flags</code> &mdash; submit flag yang ditangkap.</li>
+      <li><code>GET /api/scoreboard</code> &mdash; ambil data papan skor terbaru.</li>
+      <li><code>GET /api/attacks</code> &mdash; lihat feed serangan terbaru.</li>
+    </ul>
+    <p class="mt-2">Butuh panduan SSH? Buka <a href="{{ url_for('public.ssh_guide') }}">Panduan SSH</a>.</p>
+  </div>
+</div>
+{% endblock %}

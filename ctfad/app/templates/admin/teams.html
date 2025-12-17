@@ -1,0 +1,123 @@
+{% extends "admin/base.html" %}
+{% block title %}Manage Teams{% endblock %}
+{% block admin_content %}
+<div class="level mb-5">
+  <div class="level-left">
+    <div>
+      <p class="heading">Registered Teams</p>
+      <p class="title is-3">{{ teams|length }}</p>
+    </div>
+    <div class="ml-5">
+      <p class="heading">Challenges</p>
+      <p class="title is-3">{{ challenges|length }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column is-one-third-desktop">
+    <div class="box sticky-panel">
+      <h2 class="subtitle">Register a Team</h2>
+      <p class="mb-3">Provision credentials, API tokens, and flag access in one step.</p>
+      <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="field">
+          <label class="label">Team Name</label>
+          <div class="control">
+            {{ form.name(class_='input') }}
+          </div>
+          {% for error in form.name.errors %}
+          <p class="help is-danger">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="field">
+          <label class="label">Service IP</label>
+          <div class="control">
+            {{ form.ip_address(class_='input') }}
+          </div>
+          {% for error in form.ip_address.errors %}
+          <p class="help is-danger">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="field">
+          <label class="label">SSH Password (optional)</label>
+          <div class="control">
+            {{ form.ssh_password(class_='input', placeholder='Set a per-team SSH password') }}
+          </div>
+        </div>
+        <button class="button is-primary is-fullwidth" type="submit">Add Team</button>
+      </form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="box">
+      <h2 class="subtitle">Team Directory</h2>
+      <div class="columns is-multiline team-grid">
+        {% for team in teams %}
+        <div class="column is-half">
+          <div class="card team-card">
+            <header class="card-header">
+              <p class="card-header-title">
+                {{ team.name }}
+                {% if team.credential %}
+                <span class="tag is-info is-light ml-2">Portal: {{ team.credential.password_plain }}</span>
+                {% endif %}
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <p><strong>Service IP:</strong> {{ team.ip_address }}</p>
+                <div class="mb-3">
+                  <p class="mb-1"><strong>API Token</strong></p>
+                  <code class="token-value">{{ team.api_token }}</code>
+                </div>
+                <div class="flag-token-list">
+                  <p class="mb-2"><strong>Flag Tokens</strong></p>
+                  {% set sorted_tokens = team.flag_access_tokens | sort(attribute='challenge_id') %}
+                  {% if sorted_tokens %}
+                  <ul>
+                    {% for token in sorted_tokens %}
+                    <li>
+                      <span class="token-label">{{ token.challenge.name if token.challenge else 'Challenge' }}</span>
+                      <code class="token-value">{{ token.token }}</code>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% else %}
+                  <p class="has-text-grey">No challenges registered yet.</p>
+                  {% endif %}
+                </div>
+                {% set key_form = key_forms.get(team.id) %}
+                {% if key_form %}
+                <form class="mb-3" method="post" action="{{ url_for('admin_ui.update_team_key', team_id=team.id) }}">
+                  {{ key_form.hidden_tag() }}
+                  <label class="label is-small">SSH Password</label>
+                  {{ key_form.ssh_password(class_='input is-small', placeholder='Set or update SSH password') }}
+                  <div class="field is-grouped is-grouped-right mt-2">
+                    <div class="control">
+                      <button class="button is-link is-small" type="submit">Save Password</button>
+                    </div>
+                  </div>
+                </form>
+                {% else %}
+                <p class="has-text-danger is-size-7">Unable to load the SSH password form for this team.</p>
+                {% endif %}
+                <form method="post" action="{{ url_for('admin_ui.delete_team', team_id=team.id) }}" onsubmit="return confirm('Delete {{ team.name }} and all associated data?');">
+                  {{ delete_form.csrf_token }}
+                  {{ delete_form.team_id(value=team.id) }}
+                  <button class="button is-danger is-light is-fullwidth" type="submit">Delete Team</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="column">
+          <p class="has-text-grey">No teams registered yet.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

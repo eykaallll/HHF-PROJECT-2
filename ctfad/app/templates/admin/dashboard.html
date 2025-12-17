@@ -1,0 +1,151 @@
+{% extends "admin/base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block admin_content %}
+<h1 class="title">Event Overview</h1>
+<div class="columns is-multiline">
+  <div class="column is-one-third">
+    <div class="box has-text-centered">
+      <p class="heading">Registered Teams</p>
+      <p class="title">{{ scoreboard|length }}</p>
+    </div>
+  </div>
+  <div class="column is-one-third">
+    <div class="box has-text-centered">
+      <p class="heading">Valid Captures</p>
+      <p class="title">{{ total_flags }}</p>
+    </div>
+  </div>
+  <div class="column is-one-third">
+    <div class="box has-text-centered">
+      <p class="heading">Challenges</p>
+      <p class="title">{{ challenge_count }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <h2 class="subtitle">Scoreboard Snapshot</h2>
+  <div class="table-container">
+    <table class="table is-striped is-fullwidth">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Team</th>
+          <th>Captures</th>
+          <th>SLA Passes</th>
+          <th>Total Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in scoreboard %}
+        <tr>
+          <td>{{ row.rank }}</td>
+          <td>{{ row.team }}</td>
+          <td>{{ row.attack_captures }}</td>
+          <td>{{ row.sla_passes }}</td>
+          <td>{{ row.total }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column">
+    <div class="box">
+      <h2 class="subtitle">Rotate Flags</h2>
+      <p>Generate a fresh flag for every team/challenge pair.</p>
+      <form method="post" action="{{ url_for('admin_ui.rotate_flags_action') }}">
+        {{ rotate_form.hidden_tag() }}
+        <button class="button is-warning" type="submit">Rotate Flags</button>
+      </form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="box">
+      <h2 class="subtitle">Run SLA Checks</h2>
+      <p class="mb-3">Trigger challenge-specific probes. Each script is capped at 60 seconds.</p>
+      <form method="post" action="{{ url_for('admin_ui.run_sla_action') }}">
+        {{ sla_form.hidden_tag() }}
+        <div class="field">
+          <label class="label">Tick Number</label>
+          <div class="control">
+            {{ sla_form.tick_number(class_='input') }}
+          </div>
+          {% for error in sla_form.tick_number.errors %}
+          <p class="help is-danger">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <button class="button is-primary" type="submit">Execute SLA</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <h2 class="subtitle">Recent Activity</h2>
+  <div class="table-container">
+    <table class="table is-striped is-fullwidth">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Attacker</th>
+          <th>Defender</th>
+          <th>Challenge</th>
+          <th>Valid</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in recent_attacks %}
+        <tr>
+          <td>{{ entry.created_at }}</td>
+          <td>{{ entry.attacker.name if entry.attacker else 'Unknown' }}</td>
+          <td>{{ entry.defender.name if entry.defender else 'Unknown' }}</td>
+          <td>{{ entry.challenge.name if entry.challenge else 'n/a' }}</td>
+          <td>{{ '✅' if entry.is_valid else '❌' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No submissions yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="box">
+  <h2 class="subtitle">SLA Logs</h2>
+  <div class="table-container">
+    <table class="table is-fullwidth is-striped">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Team</th>
+          <th>Challenge</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in sla_logs %}
+        <tr>
+          <td>{{ entry.created_at }}</td>
+          <td>{{ entry.team.name if entry.team else 'Unknown' }}</td>
+          <td>{{ entry.challenge.name if entry.challenge else 'Unknown' }}</td>
+          <td>
+            {% if entry.passed %}
+            <span class="tag is-success is-light">Pass</span>
+            {% else %}
+            <span class="tag is-danger is-light">Fail</span>
+            {% endif %}
+          </td>
+          <td><pre class="sla-log">{{ entry.details or '—' }}</pre></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No SLA runs recorded yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

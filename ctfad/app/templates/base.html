@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}HHF-ADCTF{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body class="app-body">
+    <nav class="navbar primary-navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item brand-mark" href="/">HHF-ADCTF</a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="primaryMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="primaryMenu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="{{ url_for('public.api_docs') }}">Dokumentasi API</a>
+          <a class="navbar-item" href="{{ url_for('public.scoreboard') }}">Papan Skor</a>
+          <a class="navbar-item" href="{{ url_for('public.attack_log') }}">Log Serangan</a>
+          <a class="navbar-item" href="{{ url_for('public.ssh_guide') }}">Panduan SSH</a>
+        </div>
+        <div class="navbar-end">
+          {% if current_user.is_authenticated %}
+            {% if current_user.is_team %}
+            <a class="navbar-item" href="{{ url_for('team_ui.dashboard') }}">Dasbor Tim</a>
+            {% elif current_user.is_admin %}
+            <a class="navbar-item" href="{{ url_for('admin_ui.dashboard') }}">Dasbor Admin</a>
+            {% endif %}
+            <a class="navbar-item" href="{{ url_for('auth.logout') }}">Keluar</a>
+          {% else %}
+          <a class="navbar-item" href="{{ url_for('auth.login') }}">Masuk</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="notification-stack">
+      {% for category, message in messages %}
+      <div class="notification is-{{ category if category in ['primary','link','info','success','warning','danger'] else 'info' }}">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <main class="section">
+      <div class="container page-container">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <footer class="footer page-footer">
+      <div class="content has-text-centered">
+        <p>@HHF-ADCTF • 2025</p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const burger = document.querySelector('.navbar-burger');
+        const menu = document.getElementById('primaryMenu');
+        if (burger && menu) {
+          burger.addEventListener('click', () => {
+            burger.classList.toggle('is-active');
+            menu.classList.toggle('is-active');
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

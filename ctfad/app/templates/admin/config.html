@@ -1,0 +1,116 @@
+{% extends "admin/base.html" %}
+{% block title %}Game Configuration{% endblock %}
+{% block admin_content %}
+<h1 class="title">Game Configuration</h1>
+<div class="box">
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="field">
+      <label class="label">Start Time</label>
+      <div class="control">
+        {{ form.start_time(class_='input', type='datetime-local') }}
+      </div>
+      {% for error in form.start_time.errors %}
+      <p class="help is-danger">{{ error }}</p>
+      {% endfor %}
+    </div>
+    <div class="field">
+      <label class="label">End Time</label>
+      <div class="control">
+        {{ form.end_time(class_='input', type='datetime-local') }}
+      </div>
+      {% for error in form.end_time.errors %}
+      <p class="help is-danger">{{ error }}</p>
+      {% endfor %}
+      <p class="help">Calculated automatically when tick length and total ticks are provided.</p>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <label class="label">Tick Length (seconds)</label>
+          <div class="control">
+            {{ form.tick_length(class_='input') }}
+          </div>
+          {% for error in form.tick_length.errors %}
+          <p class="help is-danger">{{ error }}</p>
+          {% endfor %}
+          <p class="help">Combined with the number of ticks to derive the end time.</p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label">Number of Ticks</label>
+          <div class="control">
+            {{ form.num_ticks(class_='input') }}
+          </div>
+          {% for error in form.num_ticks.errors %}
+          <p class="help is-danger">{{ error }}</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <button class="button is-primary" type="submit">Save Configuration</button>
+  </form>
+</div>
+
+{% if config %}
+<div class="box">
+  <h2 class="subtitle">Current Configuration</h2>
+  <p><strong>Start:</strong> {{ config.start_time }}</p>
+  <p><strong>End:</strong> {{ config.end_time }}</p>
+  <p><strong>Tick Length:</strong> {{ config.tick_length }} seconds</p>
+  <p><strong>Ticks:</strong> {{ config.num_ticks }}</p>
+</div>
+{% else %}
+<p>No configuration saved yet.</p>
+{% endif %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const startInput = document.getElementById('start_time');
+    const endInput = document.getElementById('end_time');
+    const tickInput = document.getElementById('tick_length');
+    const numTicksInput = document.getElementById('num_ticks');
+
+    if (!startInput || !endInput || !tickInput || !numTicksInput) {
+      return;
+    }
+
+    const pad = (value) => value.toString().padStart(2, '0');
+    const toLocalInputValue = (date) => {
+      return [
+        date.getFullYear(),
+        '-',
+        pad(date.getMonth() + 1),
+        '-',
+        pad(date.getDate()),
+        'T',
+        pad(date.getHours()),
+        ':',
+        pad(date.getMinutes()),
+      ].join('');
+    };
+
+    const computeEndTime = () => {
+      const startValue = startInput.value;
+      const tickSeconds = Number.parseInt(tickInput.value, 10);
+      const tickCount = Number.parseInt(numTicksInput.value, 10);
+      if (!startValue || Number.isNaN(tickSeconds) || Number.isNaN(tickCount)) {
+        return;
+      }
+      const startDate = new Date(startValue);
+      if (Number.isNaN(startDate.getTime())) {
+        return;
+      }
+      const endDate = new Date(startDate.getTime() + tickSeconds * tickCount * 1000);
+      endInput.value = toLocalInputValue(endDate);
+    };
+
+    [startInput, tickInput, numTicksInput].forEach((element) => {
+      element.addEventListener('input', computeEndTime);
+      element.addEventListener('change', computeEndTime);
+    });
+
+    computeEndTime();
+  });
+</script>
+{% endblock %}

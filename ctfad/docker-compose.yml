@@ -1,0 +1,82 @@
+services:
+  web:
+    build: .
+    image: ctfad:latest
+    container_name: ctfad-web
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    environment:
+      TZ: ${TZ:-Asia/Jakarta}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-change-me}
+      DATABASE_URL: ${DATABASE_URL:-sqlite:////app/db/ctfad.db}
+      AUTO_FLAG_ROTATION: ${AUTO_FLAG_ROTATION:-true}
+      AUTO_SLA_CHECKS: ${AUTO_SLA_CHECKS:-true}
+    volumes:
+      - ./db:/app/db
+      - ./instance:/app/instance
+    networks:
+      default:
+      ctf_net:
+        ipv4_address: ${CTFAD_IP:-10.10.0.1}
+    restart: unless-stopped
+
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: ctfad-wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ:-Asia/Jakarta}
+      - SERVERURL=${WG_HOST:-192.168.0.21}
+      - SERVERPORT=${WG_PORT:-51820}
+      - PEERS=${WG_PEERS:-10}
+      - PEERDNS=${WG_PEERDNS:-8.8.8.8}
+      - INTERNAL_SUBNET=${WG_INTERNAL_SUBNET:-10.99.50.0/24}
+      - ALLOWEDIPS=${WG_ALLOWEDIPS:-10.10.0.0/24}
+      - LOG_CONFS=true
+      - MTU=${WG_MTU:-1420}
+    volumes:
+      - ./wg-data:/config
+      - /lib/modules:/lib/modules:ro
+    sysctls:
+      - net.ipv4.ip_forward=1
+    ports:
+      - "${WG_PORT:-51820}:${WG_PORT:-51820}/udp"
+    networks:
+      ctf_net:
+        ipv4_address: ${WG_IP:-10.10.0.3}
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: ctfad-db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER:-ctfad} -p${MYSQL_PASSWORD:-ctfad} || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      TZ: ${TZ:-Asia/Jakarta}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ctfad}
+      MYSQL_USER: ${MYSQL_USER:-ctfad}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ctfad}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/mysql_schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+
+volumes:
+  mysql_data:
+
+networks:
+  ctf_net:
+    external: true
+    name: ${CTF_NET_NAME:-hhf_ctf_net}

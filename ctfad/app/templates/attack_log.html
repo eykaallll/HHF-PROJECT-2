@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Attack Log{% endblock %}
+{% block content %}
+<section class="hero attack-log-hero mb-5">
+  <div class="hero-body">
+    <div class="columns is-vcentered">
+      <div class="column">
+        <p class="title is-2">Live Attack Log</p>
+      </div>
+      <div class="column is-narrow">
+        <div class="tags stacked-tags">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="box">
+  <div class="table-container">
+    <table class="table is-fullwidth attack-log-table" id="attack-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Attacker</th>
+          <th>Defender</th>
+          <th>Challenge</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='attack_log.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,214 @@
+:root {
+  --gradient-start: #1e1a4f;
+  --gradient-mid: #5a2a9d;
+  --gradient-end: #22c1c3;
+  --panel-bg: #ffffff;
+  --page-bg: #eef2fb;
+  --nav-overlay: rgba(15, 7, 63, 0.55);
+}
+
+body.app-body {
+  background: var(--page-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.primary-navbar {
+  background: linear-gradient(100deg, rgba(30, 26, 79, 0.95), rgba(90, 42, 157, 0.95), rgba(34, 193, 195, 0.9));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.primary-navbar .navbar-item,
+.primary-navbar .navbar-link {
+  color: #fff;
+  font-weight: 600;
+}
+
+.primary-navbar .navbar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.brand-mark {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.page-container {
+  max-width: 1100px;
+}
+
+.notification-stack {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 0.5rem;
+}
+
+.page-footer {
+  margin-top: auto;
+  background: transparent;
+  padding-top: 1rem;
+}
+
+.hero.scoreboard-hero,
+.hero.attack-log-hero {
+  background: linear-gradient(120deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 15px 35px rgba(17, 24, 39, 0.25);
+}
+
+.hero.scoreboard-hero .heading,
+.hero.attack-log-hero .heading {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.box,
+.card {
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.team-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.team-card ul li {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid #f0f2f7;
+  gap: 0.25rem;
+}
+
+.team-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.team-card ul li:last-child {
+  border-bottom: none;
+}
+
+.team-card .token-value {
+  background: #f8f6ff;
+  color: #241a44;
+  padding: 0.35rem 0.45rem;
+  border-radius: 8px;
+  font-family: 'Fira Code', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.85rem;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  display: block;
+}
+
+.team-card .token-label {
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: #6e7191;
+}
+
+.team-grid .card {
+  height: 100%;
+}
+
+.team-grid .column {
+  min-width: 320px;
+}
+
+.stacked-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.attack-log-table td,
+.attack-log-table th,
+.table tbody tr td {
+  vertical-align: middle;
+}
+
+.box ol,
+.box ul {
+  margin-left: 1rem;
+}
+
+.hero.scoreboard-hero .title,
+.hero.attack-log-hero .title {
+  color: #fff;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.hero.scoreboard-hero .subtitle,
+.hero.attack-log-hero .subtitle {
+  color: #e9eefc;
+}
+
+.stat-chip {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 2px solid #e0e6f4;
+}
+
+.timeline-item {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.timeline-marker {
+  width: 12px;
+  height: 12px;
+  background: #3273dc;
+  border-radius: 50%;
+  position: absolute;
+  left: -7px;
+  top: 6px;
+}
+
+.timeline-marker.is-link {
+  background: #209cee;
+}
+
+.timeline-marker.is-danger {
+  background: #ff3860;
+}
+
+.timeline-content {
+  padding-left: 1rem;
+}
+
+.sla-log {
+  max-height: 16rem;
+  overflow: auto;
+  background: #f7f9ff;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  font-family: 'Fira Code', 'SFMono-Regular', Consolas, monospace;
+}

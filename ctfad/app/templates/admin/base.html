@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="columns">
+  <aside class="column is-one-quarter">
+    <nav class="menu">
+      <p class="menu-label">Administration</p>
+      <ul class="menu-list">
+        <li><a href="{{ url_for('admin_ui.dashboard') }}" class="{% if request.endpoint == 'admin_ui.dashboard' %}is-active{% endif %}">Dashboard</a></li>
+        <li><a href="{{ url_for('admin_ui.configure') }}" class="{% if request.endpoint == 'admin_ui.configure' %}is-active{% endif %}">Game Config</a></li>
+        <li><a href="{{ url_for('admin_ui.teams') }}" class="{% if request.endpoint == 'admin_ui.teams' %}is-active{% endif %}">Teams</a></li>
+        <li><a href="{{ url_for('admin_ui.challenges') }}" class="{% if request.endpoint == 'admin_ui.challenges' %}is-active{% endif %}">Challenges</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="column">
+    {% block admin_content %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

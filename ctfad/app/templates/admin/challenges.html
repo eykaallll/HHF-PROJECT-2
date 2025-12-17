@@ -1,0 +1,102 @@
+{% extends "admin/base.html" %}
+{% block title %}Manage Challenges{% endblock %}
+{% block admin_content %}
+<h1 class="title">Challenges</h1>
+<div class="box">
+  <h2 class="subtitle">Create Challenge</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        {{ form.name(class_='input') }}
+      </div>
+      {% for error in form.name.errors %}
+      <p class="help is-danger">{{ error }}</p>
+      {% endfor %}
+    </div>
+    <div class="field">
+      <label class="label">Service Port</label>
+      <div class="control">
+        {{ form.port(class_='input') }}
+      </div>
+      {% for error in form.port.errors %}
+      <p class="help is-danger">{{ error }}</p>
+      {% endfor %}
+    </div>
+    <div class="field">
+      <label class="label">SLA Script Path</label>
+      <div class="control">
+        {{ form.sla_script(class_='input') }}
+      </div>
+      <p class="help">Absolute or relative path to the SLA python script executed per team.</p>
+    </div>
+    <button class="button is-primary" type="submit">Add Challenge</button>
+  </form>
+</div>
+
+<div class="box">
+  <h2 class="subtitle">Registered Challenges</h2>
+  <div class="table-container">
+    <table class="table is-striped is-fullwidth">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Port</th>
+          <th>SLA Script</th>
+          <th>Flags Issued</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for challenge in challenges %}
+        <tr>
+          <td>{{ challenge.name }}</td>
+          <td>{{ challenge.port }}</td>
+          <td>{{ challenge.sla_script or 'None' }}</td>
+          <td>{{ challenge.flags|length }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No challenges configured.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="box">
+  <h2 class="subtitle">Edit Challenges</h2>
+  {% if challenges %}
+    {% for challenge in challenges %}
+    {% set edit_form = edit_forms[challenge.id] %}
+    <div class="box">
+      <h3 class="title is-5">Edit {{ challenge.name }}</h3>
+      <form method="post" action="{{ url_for('admin_ui.edit_challenge', challenge_id=challenge.id) }}">
+        {{ edit_form.hidden_tag() }}
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            {{ edit_form.name(class_='input') }}
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Service Port</label>
+          <div class="control">
+            {{ edit_form.port(class_='input') }}
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">SLA Script Path</label>
+          <div class="control">
+            {{ edit_form.sla_script(class_='input') }}
+          </div>
+          <p class="help">Leave empty to disable SLA checks for this challenge.</p>
+        </div>
+        <button class="button is-link" type="submit">Save Changes</button>
+      </form>
+    </div>
+    {% endfor %}
+  {% else %}
+  <p>No challenges available to edit.</p>
+  {% endif %}
+</div>
+{% endblock %}
