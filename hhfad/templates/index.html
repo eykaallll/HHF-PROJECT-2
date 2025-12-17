@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+    <h2>Helpful Helper Feedback Platform</h2>
+    <p>Coaches use this internal studio to ship "helper banners" that rotate through the event dashboards. The template snippets let them drop in runtime data (name, shift, queue length) without looping engineers in for every tweak.</p>
+    <p>Primary areas:</p>
+    <ul>
+        <li><code>/designer</code> &mdash; compose and preview the rotating banners</li>
+        <li><code>/logs?name=events.log</code> &mdash; operations audit trail for banner updates</li>
+        <li><code>/flag-check</code> &mdash; compliance endpoint for the risk team</li>
+    </ul>
+    <p class="hint">Operations swears the compliance report never exposes sensitive data in transit, only on disk. Probably fine.</p>
+</section>
+
+{% endblock %}

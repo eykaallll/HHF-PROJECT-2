@@ -1,0 +1,23 @@
+services:
+  web:
+    build: .
+    image: helpful-helper:latest
+    environment:
+      FLASK_APP: app.py
+      PORT: 8001
+      FLAG_PATH: /flag.txt
+      SSH_PORT: 2222
+      SSH_PASSWORD: ${SSH_PASSWORD:-helperpass}
+      FLAG_ROTATOR_BASE_URL: ${FLAG_ROTATOR_BASE_URL:-http://10.10.0.1:5000}
+      FLAG_ROTATOR_TOKEN: ${FLAG_ROTATOR_TOKEN:-bcdb3f85e9b80840dcbae34f6c849c86}
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      ctf_net:
+        ipv4_address: ${CHALLENGE_IP:-10.10.0.100}
+    restart: unless-stopped
+
+networks:
+  ctf_net:
+    external: true
+    name: ${CTF_NET_NAME:-hhf_ctf_net}

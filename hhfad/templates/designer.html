@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+    <h2>Preview Studio</h2>
+    <p class="hint">Legacy sanitizers scrub a few scary tokens before rendering, so paste whatever helper macros you need and ops will keep an eye on it.</p>
+    <form method="post">
+        <label>
+            display name
+            <input type="text" name="user" value="{{ preview_user }}" maxlength="40">
+        </label>
+        <label>
+            snippet
+            <textarea name="snippet" rows="6" placeholder="Example: {{ '{{ helper|upper }}' }}">{{ snippet }}</textarea>
+        </label>
+        <button type="submit">render</button>
+    </form>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+</section>
+
+{% if rendered %}
+<section class="card">
+    <h3>Rendered output</h3>
+    <div>{{ rendered|safe }}</div>
+</section>
+{% endif %}
+{% endblock %}

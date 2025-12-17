@@ -1,0 +1,71 @@
+[flag_watcher] writing to /flag.txt, polling every 60s (offset 0.5s after server tick)
+[flag_watcher] sleeping 44.50s to sync with server tick
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/f954d1f5da21088a2dc7f5092df271ae
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/5e9106a7303b1695af8ae0720f2f2455
+[flag_watcher] server responded with flag: HHFADCTF{05FZJXL5152G6HGSFUQHTQMDQAO3KFIR}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:44:55
+[flag_watcher] sleeping 64.64s to sync with server tick
+[flag_watcher] server responded with flag: HHFADCTF{LH91N2K9Y924HMVMI2M21UUY58Q2ETBO}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:44:55
+[flag_watcher] sleeping 64.63s to sync with server tick
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/e6a6421e8373d9bcb2873f38b5299141
+[flag_watcher] server responded with flag: HHFADCTF{9PG1QS8XN87HUKG9MK66ZSN7G024JEH6}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:44:58
+[flag_watcher] sleeping 62.27s to sync with server tick
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/f954d1f5da21088a2dc7f5092df271ae[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/5e9106a7303b1695af8ae0720f2f2455
+
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/e6a6421e8373d9bcb2873f38b5299141
+[flag_watcher] server responded with flag: HHFADCTF{3DD8LJJX3H8PX6GRPFQKAKPGAI3DSQGV}
+[flag_watcher] server responded with flag: HHFADCTF{L87B1MUYTQF1TFOT5AZJYJGPW41EKS53}[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:45:56
+
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:45:56[flag_watcher] sleeping 64.19s to sync with server tick
+[flag_watcher] sleeping 64.19s to sync with server tick
+
+[flag_watcher] server responded with flag: HHFADCTF{QS4IIFRJM3ISCTEO302NM56KS6V8AB7C}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:45:56
+[flag_watcher] sleeping 64.18s to sync with server tick
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/e6a6421e8373d9bcb2873f38b5299141[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/5e9106a7303b1695af8ae0720f2f2455
+
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/f954d1f5da21088a2dc7f5092df271ae
+[flag_watcher] server responded with flag: HHFADCTF{IQR4LBPJNGW7E38G1F06MURJ1J80RIAN}
+[flag_watcher] server responded with flag: HHFADCTF{H80FTJAGHP0NYDY9OO8YQDODS6H3GJ0P}[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:46:55
+
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:46:55[flag_watcher] sleeping 64.55s to sync with server tick
+
+[flag_watcher] sleeping 64.54s to sync with server tick
+[flag_watcher] server responded with flag: HHFADCTF{6CG40M9MCZFAI7HS19MJFBS3E3TX8SOV}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:46:55
+[flag_watcher] sleeping 64.53s to sync with server tick
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/f954d1f5da21088a2dc7f5092df271ae
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/e6a6421e8373d9bcb2873f38b5299141
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/5e9106a7303b1695af8ae0720f2f2455
+[flag_watcher] server responded with flag: HHFADCTF{YGAU26GFVBQNBBNJAPFX2OED6SI5W4TE}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:47:53
+[flag_watcher] sleeping 66.90s to sync with server tick
+[flag_watcher] server responded with flag: HHFADCTF{O2XTGWCZWHWGO08XMB1MSADE85YA5A9R}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:47:53
+[flag_watcher] sleeping 66.90s to sync with server tick
+[flag_watcher] server responded with flag: HHFADCTF{RBOBSDTAHT6H7H0AW9A65R4KNJOZAGYR}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:47:53
+[flag_watcher] sleeping 66.89s to sync with server tick
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/e6a6421e8373d9bcb2873f38b5299141
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/5e9106a7303b1695af8ae0720f2f2455
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/f954d1f5da21088a2dc7f5092df271ae
+[flag_watcher] server responded with flag: HHFADCTF{AE4KMY1281HPYJP808ONQL1WYI1FZVOL}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:48:55
+[flag_watcher] sleeping 64.65s to sync with server tick
+[flag_watcher] server responded with flag: HHFADCTF{TQWQJ7V75NXIJ93E1MKE5RGJV89NIXPZ}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:48:55
+[flag_watcher] sleeping 64.64s to sync with server tick
+[flag_watcher] server responded with flag: HHFADCTF{5NQ5DIISWXE7OQOC31AMY1FU9MEJBUT1}
+[flag_watcher] wrote flag to /flag.txt at 2025-11-25 16:48:55
+[flag_watcher] sleeping 64.63s to sync with server tick
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/e6a6421e8373d9bcb2873f38b5299141
+[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/5e9106a7303b1695af8ae0720f2f2455[flag_watcher] fetching flag from http://10.10.0.1:5000/service/flag/f954d1f5da21088a2dc7f5092df271ae
+
+[flag_watcher] failed to update flag: HTTPConnectionPool(host='10.10.0.1', port=5000): Max retries exceeded with url: /service/flag/e6a6421e8373d9bcb2873f38b5299141 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x7ce62bd0c7d0>, 'Connection to 10.10.0.1 timed out. (connect timeout=10.0)'))
+[flag_watcher] sleeping 54.58s to sync with server tick
+[flag_watcher] failed to update flag: HTTPConnectionPool(host='10.10.0.1', port=5000): Max retries exceeded with url: /service/flag/f954d1f5da21088a2dc7f5092df271ae (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x74db38d27b90>, 'Connection to 10.10.0.1 timed out. (connect timeout=10.0)'))
+[flag_watcher] sleeping 54.56s to sync with server tick
+[flag_watcher] failed to update flag: HTTPConnectionPool(host='10.10.0.1', port=5000): Max retries exceeded with url: /service/flag/5e9106a7303b1695af8ae0720f2f2455 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x73f0fd1153d0>, 'Connection to 10.10.0.1 timed out. (connect timeout=10.0)'))
+[flag_watcher] sleeping 54.55s to sync with server tick

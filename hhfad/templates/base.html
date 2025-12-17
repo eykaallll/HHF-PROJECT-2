@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Helpful Helper Feedback</title>
+    <style>
+        body {
+            background: #090b10;
+            color: #e9e9f1;
+            font-family: "Fira Code", Consolas, monospace;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #1f2332;
+            background: #0d111c;
+        }
+        nav a {
+            color: #9bd5ff;
+            margin-right: 1rem;
+            text-decoration: none;
+        }
+        main {
+            padding: 2rem;
+        }
+        .card {
+            border: 1px solid #1f2332;
+            border-radius: 6px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            background: #0d1220;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.4rem;
+            background: #05070c;
+            border: 1px solid #1f2332;
+            color: #e9e9f1;
+            border-radius: 4px;
+        }
+        button {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            background: #4c8bf5;
+            color: #fff;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .error {
+            color: #ff6b81;
+        }
+        .hint {
+            color: #7f93b8;
+        }
+        code {
+            background: #0b1220;
+            padding: 0.1rem 0.25rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">home</a>
+            <a href="/designer">designer</a>
+            <a href="/logs?name=events.log">logs</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
